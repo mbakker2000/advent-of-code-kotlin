@@ -25,7 +25,7 @@ fun main() {
             val third = second
             second = first
             first = s.toInt()
-            if (index > 1) sliding.add("" + first + second + third)
+            if (index > 1) sliding.add("" + (first + second + third))
         }
 
         return part1(sliding)
