@@ -15,7 +15,7 @@ fun main() {
                 val (cmd, num) = row.split(" ")
                 cmd to num.toInt()
             }
-            .map{
+            .map {
                 when (it.first) {
                     "forward" -> it.second to 0
                     "down" -> 0 to it.second
@@ -23,9 +23,7 @@ fun main() {
                     else -> 0 to 0
                 }
             }
-            .fold(0 to 0) { acc, i ->
-                fn2(acc, i)
-            }
+            .fold(0 to 0, fn2)
 
         return result.first * result.second
     }
