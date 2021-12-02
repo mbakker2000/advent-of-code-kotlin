@@ -6,7 +6,6 @@ fun main() {
 
     fun solution(
         input: List<String>,
-        fn: (Pair<String, Int>) -> Pair<Int, Int>,
         fn2: (Pair<Int, Int>, Pair<Int, Int>) -> Pair<Int, Int>
     ): Int {
         val regex = """^(forward|down|up)\s[0-9]$""".toRegex()
@@ -16,7 +15,14 @@ fun main() {
                 val (cmd, num) = row.split(" ")
                 cmd to num.toInt()
             }
-            .map(fn)
+            .map{
+                when (it.first) {
+                    "forward" -> it.second to 0
+                    "down" -> 0 to it.second
+                    "up" -> 0 to -it.second
+                    else -> 0 to 0
+                }
+            }
             .fold(0 to 0) { acc, i ->
                 fn2(acc, i)
             }
@@ -24,34 +30,18 @@ fun main() {
         return result.first * result.second
     }
 
-
     fun part1(input: List<String>): Int {
-        return solution(input, {
-            when (it.first) {
-                "forward" -> it.second to 0
-                "down" -> 0 to it.second
-                "up" -> 0 to -it.second
-                else -> 0 to 0
-            }
-        }, { acc, i ->
+        return solution(input) { acc, i ->
             acc.first + i.first to acc.second + i.second
-        })
+        }
     }
-
 
     fun part2(input: List<String>): Int {
         var aim = 0
-        return solution(input, {
-            when (it.first) {
-                "forward" -> it.second to 0
-                "down" -> 0 to it.second
-                "up" -> 0 to -it.second
-                else -> 0 to 0
-            }
-        }, { acc, i ->
+        return solution(input) { acc, i ->
             aim += i.second
             acc.first + i.first to (acc.second + (i.first * aim))
-        })
+        }
     }
 
 // test if implementation meets criteria from the description, like:
