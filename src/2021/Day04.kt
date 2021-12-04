@@ -3,7 +3,7 @@ package `2021`
 import readInput
 
 fun main() {
-    val compleLineRegec = """\*([0-9]|\|)*(((\|X)(\|(.){1,3}){4}){4}(\|X)|\|(\|X){5}(\|){2})([0-9]|\||X)*\*""".toRegex()
+    val compleLineRegec = """\*(\||[0-9]|X)*(((\|X)(\|(.){1,3}){4}){4}(\|X)|\|(\|X){5}(\|){2})(\||[0-9]|X)*\*""".toRegex()
     val replaceSpacesRegex = """\s+""".toRegex()
 
     fun toRaster(input: List<String>): String {
