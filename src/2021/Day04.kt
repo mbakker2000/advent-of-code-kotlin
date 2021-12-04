@@ -3,21 +3,8 @@ package `2021`
 import readInput
 
 fun main() {
-    val regex = """(((\|X)(\|(.){1,3}){4}){4}(\|X)|\|(\|X){5}(\|){2})""".toRegex()
+    val compleLineRegec = """\*([0-9]|\|)*(((\|X)(\|(.){1,3}){4}){4}(\|X)|\|(\|X){5}(\|){2})([0-9]|\||X)*\*""".toRegex()
     val replaceSpacesRegex = """\s+""".toRegex()
-
-    fun solution(number: Int, input: Pair<List<String>, List<String>>): Pair<List<String>, List<String>> {
-        val boards = input.first
-            .map { it.replace("|$number|", "|X|") }
-            .map {
-                if (it.contains(regex)) listOf("") to listOf(it) else listOf(it) to listOf("")
-            }
-            .fold(listOf<String>() to listOf(* input.second.toTypedArray())) { acc, item ->
-                listOf(*item.first.toTypedArray(), * acc.first.toTypedArray()) to
-                        listOf(*item.second.toTypedArray(), * acc.second.toTypedArray())
-            }
-        return boards.first.filter { it.isNotBlank() } to boards.second.filter { it.isNotBlank() }
-    }
 
     fun toRaster(input: List<String>): String {
         return input
@@ -30,7 +17,7 @@ fun main() {
     }
 
     fun count(input: String): Int {
-        return input.split("|")
+        return input.replace("*", "").split("|")
             .filter { it != "" }
             .filter { it != "X" }
             .map { it.toInt() }
@@ -38,37 +25,32 @@ fun main() {
     }
 
     fun part1(input: List<String>): Int {
-        var current = "|${toRaster(input)}|"
+        var current = "*|${toRaster(input)}|*"
         val turns = input[0].split(",")
-            .asSequence()
-            .map() {
-                current = current.replace("|$it|", "|X|")
-                it to current
+            .map { it.toInt() }
+        turns.forEach() { number ->
+            current = current.replace("|$number|", "|X|")
+            if (current.contains(compleLineRegec)) {
+                return number * count(compleLineRegec.findAll(current).iterator().next().value)
             }
-            .map {
-                it.first to it.second.split("*").filter { it.contains(regex) }
-            }
-            .filter { it.second.isNotEmpty() }
-            .map {
-                it.first to count(it.second[0])
-            }.first()
-        return (turns.first.toInt() * turns.second)
+        }
+        return 0
     }
 
     fun part2(input: List<String>): Int {
-        var pairs = toRaster(input)
-            .split("*")
-            .map { "||$it" } to listOf<String>()
-        input[0]
-            .split(",")
+        var current = "*|${toRaster(input)}|*"
+        val turns = input[0].split(",")
             .map { it.toInt() }
-            .forEach() {
-                val updated = solution(it, pairs)
-                if (updated.first.isEmpty() && pairs.first.isNotEmpty()) {
-                    return it * count(pairs.first.first().replace("|${it}|", "|X|"))
+        turns.forEach() { number ->
+            current = current.replace("|$number|", "|X|")
+            if (current.contains(compleLineRegec)) {
+                val previous = current
+                current = current.replace(compleLineRegec, "*")
+                if (current.replace("*", "").isBlank()) {
+                    return number * count(compleLineRegec.findAll(previous).iterator().next().value)
                 }
-                pairs = updated
             }
+        }
         return 0
     }
 
