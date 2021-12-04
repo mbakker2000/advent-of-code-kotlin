@@ -3,8 +3,8 @@ package `2021`
 import readInput
 
 fun main() {
-    val regex = """((((\|X){1}(\|(.){1,3}){4}){1}){4}(\|X){1}|\|\|X\|X\|X\|X\|X\|\|)""".toRegex()
-    val replaceSpacesRegex = "\\s+".toRegex()
+    val regex = """(((\|X)(\|(.){1,3}){4}){4}(\|X)|\|(\|X){5}(\|){2})""".toRegex()
+    val replaceSpacesRegex = """\s+""".toRegex()
 
     fun solution(number: Int, input: Pair<List<String>, List<String>>): Pair<List<String>, List<String>> {
         val boards = input.first
