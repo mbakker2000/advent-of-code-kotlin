@@ -1,4 +1,4 @@
-package `2021`
+package `2020`
 
 import readInput
 import kotlin.math.pow
