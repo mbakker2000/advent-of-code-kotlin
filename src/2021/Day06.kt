@@ -17,9 +17,8 @@ fun main() {
 
 
     fun solution(cycles: Int, input: List<Pair<Int, Long>>): Long {
-        val list = 0..cycles
         var fishes = input
-        list.forEachIndexed() { index, it ->
+        (0..cycles).forEach() { _ ->
             fishes = fishes
                 .map { fish ->
                     if (fish.first == 0) listOf(6 to fish.second, 8 to 1L) else listOf(fish.first - 1 to fish.second)
