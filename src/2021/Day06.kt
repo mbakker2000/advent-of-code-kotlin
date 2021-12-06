@@ -16,9 +16,9 @@ fun main() {
     )
 
 
-    fun solution(cycles: Int, input: List<String>): Long {
-        var fishes: List<Pair<Int, Long>> = input[0].split(",").map { it.toInt() to 1L }
+    fun solution(cycles: Int, input: List<Pair<Int, Long>>): Long {
         val list = 0..cycles
+        var fishes = input
         list.forEachIndexed() { index, it ->
             fishes = fishes
                 .map { fish ->
@@ -37,21 +37,23 @@ fun main() {
         }
     }
 
-    fun part1(input: List<String>): Long {
+    fun part1(input: List<Pair<Int, Long>>): Long {
         return solution(79, input)
     }
 
-    fun part2(input: List<String>): Long {
+    fun part2(input: List<Pair<Int, Long>>): Long {
         return solution(255, input)
     }
 
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("2021/Day06_test")
-    check(part1(testInput) == 5934L)
+    val testFishes: List<Pair<Int, Long>> = testInput[0].split(",").map { it.toInt() to 1L }
+    check(part1(testFishes) == 5934L)
 
     val input = readInput("2021/Day06")
+    val fishes: List<Pair<Int, Long>> = input[0].split(",").map { it.toInt() to 1L }
 
-    println("part1:" + part1(input))//5576
-    check(part2(testInput) == 26984457539)//12
-    println("part2:" + part2(input))//25925
+    println("part1:" + part1(fishes))//5576
+    check(part2(testFishes) == 26984457539)//12
+    println("part2:" + part2(fishes))//25925
 }
