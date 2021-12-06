@@ -3,67 +3,51 @@ package `2021`
 import readInput
 
 fun main() {
-    fun part1(input: List<String>): Int {
-        var fishes = input[0].split(",").map { it.toInt() }
-        val list = 0..79
-        list.forEach {
-            fishes = fishes
-                .map { fish -> fish - 1 }
-                .map { fish -> if (fish == -1) listOf(6, 8) else listOf(fish) }
-                .flatten()
-        }
-        return fishes.size
-    }
+    val empty = listOf<Pair<Int, Long>>(
+        (0 to 0),
+        (1 to 0),
+        (2 to 0),
+        (3 to 0),
+        (4 to 0),
+        (5 to 0),
+        (6 to 0),
+        (7 to 0),
+        (8 to 0)
+    )
 
-    fun part2(input: List<String>): Long {
-        var fishes : List<Pair<Int, Long>> = input[0].split(",").map { it.toInt() to 1L }
-        val empty = listOf<Pair<Int, Long>>(
-            (0 to 0),
-            (1 to 0),
-            (2 to 0),
-            (3 to 0),
-            (4 to 0),
-            (5 to 0),
-            (6 to 0),
-            (7 to 0),
-            (8 to 0)
-        )
-        val list = 0..255
+
+    fun solution(cycles: Int, input: List<String>): Long {
+        var fishes: List<Pair<Int, Long>> = input[0].split(",").map { it.toInt() to 1L }
+        val list = 0..cycles
         list.forEachIndexed() { index, it ->
             fishes = fishes
                 .map { fish ->
-                    fish.first - 1 to fish.second
-                }
-                .map { fish ->
-                    if (fish.first == -1) listOf(6 to fish.second, 8 to 1L) else listOf(fish)
+                    if (fish.first == 0) listOf(6 to fish.second, 8 to 1L) else listOf(fish.first - 1 to fish.second)
                 }
                 .fold(initial = empty) { acc, list ->
-                    acc
-                        .map {
-                            if (list[0].first == it.first) {
-                                it.first to it.second + list[0].second
-                            } else {
-                                it
-                            }
-                        }
-                        .map {
-                            if (list.size > 1 && list[1].first == it.first) {
-                                it.first to it.second + list[0].second
-                            } else {
-                                it
-                            }
-                        }
+                    acc.map { fish ->
+                        if (list.any { pair -> fish.first == pair.first })
+                            fish.first to fish.second + list[0].second
+                        else fish
+                    }
                 }
         }
-
         return fishes.map { it.second }.fold(0) { acc, l ->
             acc + l
         }
     }
 
+    fun part1(input: List<String>): Long {
+        return solution(79, input)
+    }
+
+    fun part2(input: List<String>): Long {
+        return solution(255, input)
+    }
+
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("2021/Day06_test")
-    check(part1(testInput) == 5934)
+    check(part1(testInput) == 5934L)
 
     val input = readInput("2021/Day06")
 
