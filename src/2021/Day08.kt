@@ -46,20 +46,19 @@ fun main() {
                     .map { it.toSortedSet().joinToString("") }
                     .map {
                         when {
-                            it.length == 2 -> it to 1
-                            it.length == 3 -> it to 7
-                            it.length == 4 -> it to 4
-                            it.length == 5 && doesNotContain(pair.first[2]!!.first(), it).length == 3 -> it to 3
-                            it.length == 5 && doesContain(pair.first[4]!!.first(), it).length == 3 -> it to 5
-                            it.length == 5 && doesContain(pair.first[4]!!.first(), it).length == 2 -> it to 2
-                            it.length == 6 && doesNotContain(pair.first[4]!!.first(), it).length == 2 -> it to 9
-                            it.length == 6 && doesContain(pair.first[2]!!.first(), it).length == 2 -> it to 0
-                            it.length == 6 && doesContain(pair.first[2]!!.first(), it).length == 1 -> it to 6
-                            else -> it to 8
+                            it.length == 2 -> it to "1"
+                            it.length == 3 -> it to "7"
+                            it.length == 4 -> it to "4"
+                            it.length == 5 && doesNotContain(pair.first[2]!!.first(), it).length == 3 -> it to "3"
+                            it.length == 5 && doesContain(pair.first[4]!!.first(), it).length == 3 -> it to "5"
+                            it.length == 5 && doesContain(pair.first[4]!!.first(), it).length == 2 -> it to "2"
+                            it.length == 6 && doesNotContain(pair.first[4]!!.first(), it).length == 2 -> it to "9"
+                            it.length == 6 && doesContain(pair.first[2]!!.first(), it).length == 2 -> it to "0"
+                            it.length == 6 && doesContain(pair.first[2]!!.first(), it).length == 1 -> it to "6"
+                            else -> it to "8"
                         }
                     }
-            }.map { pair -> pair.second.map { it.second } }.map { "${it[0]}${it[1]}${it[2]}${it[3]}" }
-            .sumOf { it.toInt() }
+            }.map { pair -> pair.second.joinToString("") { it.second } }.sumOf { it.toInt() }
     }
 
     // test if implementation meets criteria from the description, like:
